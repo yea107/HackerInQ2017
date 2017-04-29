@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+      * element that contains the map. */
+        
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.1/papaparse.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        var test_path = [];
+        var test_path2 = [];
+        var date;
+        var date2;
+        Papa.parse("./data/IWG1.30Aug2016-2150.csv", {
+            download: true,
+            complete: function(results) {
+                //console.log('yee');
+                var data = results.data;
+                date = data[0][1];
+                //console.log(date);
+                for (i = 1; i < data.length - 1; i++) {
+                    //console.log(parseFloat(data[i][2]))
+                    test_path.push({
+                        lat: parseFloat(data[i][2]),
+                        lng: parseFloat(data[i][3])
+                    });
+                };
+                //console.log(test_path[0].lat);
+                setInterval(initMap(), 2000);
+            }
+        });
+        //onsole.log(test_path[0].lat)
+
+        Papa.parse("./data/IWG1.29Aug2016-1811.csv", {
+            download: true,
+            complete: function(results2) {
+                console.log('yee');
+                var data2 = results2.data;
+                date2 = data2[0][1];
+                console.log(date2);
+                for (i = 1; i < data2.length - 1; i++) {
+                    //console.log(parseFloat(data[i][2]))
+                    test_path2.push({
+                        lat: parseFloat(data2[i][2]),
+                        lng: parseFloat(data2[i][3])
+                    });
+                };
+                console.log(test_path2[0].lat);
+                //setInterval(initMap(), 2000);
+            }
+        });
+
+        function initMap() {
+            //console.log(test_path[0].lat)
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: {
+                    lat: test_path[0].lat,
+                    lng: test_path[0].lng,
+                },
+                mapTypeId: 'satellite'
+            });
+
+            var flightPath = new google.maps.Polyline({
+                path: test_path,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            var flightPath2 = new google.maps.Polyline({
+                path: test_path2,
+                geodesic: true,
+                strokeColor: '#FF33FF',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            flightPath.setMap(map);
+            flightPath2.setMap(map);
+            //map.setZoom(6);
+            //map.setCenter(new google.maps.LatLng(50, -40));
+            //map.setMapTypeId('terrain');
+
+        };
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB657VuB6WGhoQ6WDZpGMi7ZT6JzH9ZnhQ&callback=initMap">
+    </script>
+</body>
+
+</html>
