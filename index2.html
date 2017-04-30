@@ -8,12 +8,12 @@
     <style>
         /* Always set the map height explicitly to define the size of the div
       * element that contains the map. */
-        
-        #map {
+
+     #map {
             height: 100%;
         }
         /* Optional: Makes the sample page fill the window. */
-        
+
         html,
         body {
             height: 100%;
@@ -29,7 +29,7 @@
     <script>
         var test_path = [];
         var date;
-        Papa.parse("./IWG1.30Aug2016-2150.csv", {
+        Papa.parse("https://raw.githubusercontent.com/yea107/HackerInQ2017/master/data/IWG1.30Aug2016-2150.csv", {
             download: true,
             complete: function(results) {
                 //console.log('yee');
@@ -43,14 +43,11 @@
                         lng: parseFloat(data[i][3])
                     });
                 };
-                //console.log(test_path[0].lat);
                 initMap();
             }
         });
-        //onsole.log(test_path[0].lat)
 
         function initMap() {
-            //console.log(test_path[0].lat)
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 5,
                 center: {
